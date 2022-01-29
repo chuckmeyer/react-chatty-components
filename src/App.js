@@ -7,23 +7,25 @@ class Sibling1 extends React.Component {
     this.state = {
       message: '',
     }
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     this.setState({
       message: event.target.value,
     });
+    this.props.handleCallback(event.target.value);
   }
 
   render() {
     return (
       <div className='sibling'>
         <h1>Sibling 1</h1>
-        <h2>{this.state.message}</h2>
+        <h2>{ this.state.message ? this.state.message: 'Your ad here' }</h2>
         <input 
           type='text' 
           message={this.state.message}
-          onChange={this.handleChange.bind(this)} 
+          onChange={this.handleChange} 
           placeholder="Type something"
         />
       </div>
@@ -36,7 +38,7 @@ class Sibling2 extends React.Component {
     return (
       <div className='sibling'>
         <h1>Sibling 2</h1>
-        <p>{this.props.message}</p>
+        <h2>{ this.props.message ? this.props.message: 'Your ad here' }</h2>
       </div>
     );
   }
@@ -50,11 +52,17 @@ class Parent extends React.Component {
     };
   }
 
+  handleCallback= (input) => {
+    this.setState({
+      message: input,
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Parent</h1>
-        <Sibling1/>
+        <Sibling1 handleCallback={this.handleCallback}/>
         <Sibling2 message={this.state.message}/>
       </div>
     )
